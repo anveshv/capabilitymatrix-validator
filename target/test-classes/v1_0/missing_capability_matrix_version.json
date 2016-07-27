@@ -1,0 +1,52 @@
+{
+	"dms": [{
+		"dm": "mm-sdk",
+		"vskippability": 1,
+		"companionad": 0,
+		"vskipthreshold": 5,
+		"vskipoffset": 5,
+		"oss": [{
+			"os": "android",
+			"vskippability": 1,
+			"companionad": 1,
+			"vskipthreshold": 10,
+			"vskipoffset": 3
+		}, {
+			"os": "ios",
+			"vskippability": 1,
+			"companionad": 0,
+			"vskipthreshold": 10,
+			"vskipoffset": 5,
+			"dm_vers": [{
+				"ver": "6.2.1",
+				"vskippability": 0,
+				"companionad": 1,
+				"vskipthreshold": 5,
+				"vskipoffset": 3,
+				"os_vers": [{
+					"ver": "9.0.1",
+					"vskipthreshold": 6
+				}, {
+					"ver": "8.*",
+					"vskipoffset": 2
+				}]
+			}, {
+				"ver": "6.*",
+				"vskippability": 1,
+				"companionad": 1,
+				"vskipthreshold": 5,
+				"vskipoffset": 3
+			}, {
+				"ver": "5.*",
+				"vskipthreshold": 30,
+				"vskipoffset": 10
+			}]
+		}]
+	}, {
+		"dm": "twitter-sdk",
+		"vskippability": 1,
+		"companionad": 1,
+		"vskipthreshold": 10,
+		"vskipoffset": 5
+	}]
+}
