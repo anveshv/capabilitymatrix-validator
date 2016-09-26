@@ -10,10 +10,12 @@ package org.capabilitymatrix.validator;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Iterator;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonLoader;
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+import com.github.fge.jsonschema.core.report.ProcessingMessage;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.github.fge.jsonschema.main.JsonSchema;
 import com.github.fge.jsonschema.main.JsonSchemaFactory;
@@ -78,39 +80,59 @@ public class GenericCapabilityMatrixValidator implements CapabilityMatrixValidat
 	}
 
 	@Override
-	public final ValidationResult validate(String json) throws IOException {
+	public final ValidationReport validate(String json) throws IOException {
 		JsonNode jsonNode = JsonLoader.fromString(json);
 		return getValidationResult(jsonNode);
 	}
 	
 	@Override
-	public final ValidationResult validate(JsonNode jsonNode) throws IOException {
+	public final ValidationReport validate(JsonNode jsonNode) throws IOException {
         return getValidationResult(jsonNode);
 	}
 
 	@Override
-	public final ValidationResult validate(File file) throws IOException {
-		JsonNode jsonNode = JsonLoader.fromFile(file);
+	public final ValidationReport validate(File file) throws IOException {
+		JsonNode jsonNode = null;
+		try{
+			jsonNode = JsonLoader.fromFile(file);
+		}
+		catch(Exception e){
+			System.out.println("Error cause: Malformed json");
+			System.out.println(e.getLocalizedMessage());
+			return null;
+		}
         return getValidationResult(jsonNode);
 	}
 	
 	@Override
-	public final ValidationResult validate(Reader reader) throws IOException {
+	public final ValidationReport validate(Reader reader) throws IOException {
 		JsonNode jsonNode = JsonLoader.fromReader(reader);
         return getValidationResult(jsonNode);
 	}
 	
-	private final ValidationResult getValidationResult(JsonNode jsonNode) throws IOException {
+	private final ValidationReport getValidationResult(JsonNode jsonNode) throws IOException {
 	    try {
             ProcessingReport processingReport = schema.validate(jsonNode);
             if (processingReport != null) {
-                return new ValidationResult(processingReport.isSuccess(), processingReport.toString());
+            	return new ValidationReport(processingReport.isSuccess(), processingReport, jsonNode);
             } else {
-                return new ValidationResult(false, null);
+                return new ValidationReport(false, null, jsonNode);
             }
         } catch (ProcessingException e) {
             throw new IOException(e.getMessage());
         }
+	}
+	
+	public static void main(String[] args){
+		String path = args[0];
+		File json_file = new File(path);
+		CapabilityMatrixValidator validator = CapabilityMatrixValidatorFactory.getValidator(CapabilityMatrixVersion.V1_0);
+		try {
+			ValidationReport report = validator.validate(json_file);
+			System.out.println(report);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

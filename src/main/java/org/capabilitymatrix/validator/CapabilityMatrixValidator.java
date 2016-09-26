@@ -63,7 +63,7 @@ public interface CapabilityMatrixValidator {
      * @throws IOException
      *             an exception occurred while parsing or validating JSON
      */
-    public ValidationResult validate(String json) throws IOException;
+    public ValidationReport validate(String json) throws IOException;
 
     /**
      * Validates JSON against a given specification
@@ -74,7 +74,7 @@ public interface CapabilityMatrixValidator {
      * @throws IOException
      *             an exception occurred while parsing or validating JSON
      */
-    public ValidationResult validate(JsonNode jsonNode) throws IOException;
+    public ValidationReport validate(JsonNode jsonNode) throws IOException;
 
     /**
      * Validates JSON against a given specification
@@ -85,7 +85,7 @@ public interface CapabilityMatrixValidator {
      * @throws IOException
      *             an exception occurred while parsing or validating JSON
      */
-    public ValidationResult validate(File file) throws IOException;
+    public ValidationReport validate(File file) throws IOException;
 
     /**
      * Validates JSON against a given specification
@@ -96,6 +96,6 @@ public interface CapabilityMatrixValidator {
      * @throws IOException
      *             an exception occurred while parsing or validating JSON
      */
-    public ValidationResult validate(Reader reader) throws IOException;
+    public ValidationReport validate(Reader reader) throws IOException;
 	
 }

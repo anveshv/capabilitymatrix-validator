@@ -1,5 +1,5 @@
 {
-	"ver": "version string for JMX querying of Gateway Nodes",
+	"ver": 1,
 	"dms": [{
 		"dm": "mm-sdk",
 		"vskippability": 1,
@@ -40,7 +40,8 @@
 			}, {
 				"ver": "5.*",
 				"vskipthreshold": 30,
-				"vskipoffset": 10
+				"vskipoffset": 10,
+				"vpaid": 7
 			}]
 		}]
 	}, {

@@ -34,11 +34,13 @@ package org.capability.validator;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.capabilitymatrix.validator.CapabilityMatrixValidator;
 import org.capabilitymatrix.validator.CapabilityMatrixValidatorFactory;
 import org.capabilitymatrix.validator.CapabilityMatrixVersion;
+import org.capabilitymatrix.validator.ValidationReport;
 import org.capabilitymatrix.validator.ValidationResult;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -53,25 +55,73 @@ public class NativeValidatorV1_0Tests {
 
 	private static final Logger logger = LoggerFactory.getLogger(NativeValidatorV1_0Tests.class);
 	
-    @Test
-    public void testCapabilityMatrixV1_0_when_Json_Is_Valid_Expect_Pass() throws IOException {
-		CapabilityMatrixValidator validator = CapabilityMatrixValidatorFactory.getValidator(CapabilityMatrixVersion.V1_0);
-
-		String resource = "/v1_0/capability_matrix_v1_0.json";
-        ValidationResult result = validator.validate(JsonLoader.fromResource(resource));
-
-        logger.info("validation result: " + result);
-        assertTrue(resource + " is valid", result.isValid());
-    }
     
     @Test
-    public void testCapabilityMatrixV1_0_when_Json_Version_Is_Missing_Expect_Fail() throws IOException {
+    public void testCapabilityMatrixV1_0_when_Missing_OSversion_Expect_Fail() throws IOException {
 		CapabilityMatrixValidator validator = CapabilityMatrixValidatorFactory.getValidator(CapabilityMatrixVersion.V1_0);
 
-		String resource = "/v1_0/missing_capability_matrix_version.json";
-        ValidationResult result = validator.validate(JsonLoader.fromResource(resource));
+		String resource = "/v1_0/missing_os_version.json";
+		ValidationReport result = validator.validate(JsonLoader.fromResource(resource));
 
         logger.info("validation result: " + result);
         assertFalse(resource + " is not valid", result.isValid());
     }
+    
+    @Test
+    public void testCapabilityMatrixV1_0_when_Invalid_vskippability_Expect_Fail() throws IOException {
+		CapabilityMatrixValidator validator = CapabilityMatrixValidatorFactory.getValidator(CapabilityMatrixVersion.V1_0);
+
+		String resource = "/v1_0/invalid_vskippability_value.json";
+		ValidationReport result = validator.validate(JsonLoader.fromResource(resource));
+
+        logger.info("validation result: " + result);
+        assertFalse(resource + " is not valid", result.isValid());
+    }
+    
+    @Test
+    public void testCapabilityMatrixV1_0_when_Missing_MatrixVersion_Expect_Fai() throws IOException {
+		CapabilityMatrixValidator validator = CapabilityMatrixValidatorFactory.getValidator(CapabilityMatrixVersion.V1_0);
+
+		String resource = "/v1_0/missing_capability_matrix_version.json";
+		ValidationReport result = validator.validate(JsonLoader.fromResource(resource));
+
+        logger.info("validation result: " + result);
+        assertFalse(resource + " is not valid", result.isValid());
+    }
+    
+    @Test
+    public void testCapabilityMatrixV1_0_when_Invalid_vpaid_Expect_Fail() throws IOException {
+		CapabilityMatrixValidator validator = CapabilityMatrixValidatorFactory.getValidator(CapabilityMatrixVersion.V1_0);
+
+		String resource = "/v1_0/invalid_vpaid_value.json";
+		ValidationReport result = validator.validate(JsonLoader.fromResource(resource));
+
+        logger.info("validation result: " + result);
+        assertFalse(resource + " is not valid", result.isValid());
+    }
+    
+    @Test
+    public void testCapabilityMatrixV1_0_when_Invalid_Keys_Expect_Fail() throws IOException {
+		CapabilityMatrixValidator validator = CapabilityMatrixValidatorFactory.getValidator(CapabilityMatrixVersion.V1_0);
+
+		String resource = "/v1_0/invalid_json_keys.json";
+		ValidationReport result = validator.validate(JsonLoader.fromResource(resource));
+
+        logger.info("validation result: " + result);
+        assertFalse(resource + " is not valid", result.isValid());
+    }
+    
+    
+    @Test
+    public void testCapabilityMatrixV1_0_when_Badly_formed_json_Expect_Fail() throws IOException {
+		CapabilityMatrixValidator validator = CapabilityMatrixValidatorFactory.getValidator(CapabilityMatrixVersion.V1_0);
+
+		String resource = "/v1_0/invalid_json_formation.json";
+		File json_file = new File(resource);		
+		ValidationReport result = validator.validate(json_file);
+
+        logger.info("validation result: " + result);
+        assertTrue(resource + " is not valid", result == null);
+    }
+    
 }

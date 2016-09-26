@@ -15,6 +15,8 @@ public class ValidationResult {
     private final boolean valid;
     
     private final String result;
+    
+    //private final String message;
 
     /**
      * Constructs an object containing JSON validation result data.
